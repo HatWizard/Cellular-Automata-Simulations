@@ -21,7 +21,7 @@ namespace SandySharp
         Color water;
         Queue<Vector2i> temp;
         bool fireable = true;
-        public FireSimulation(Color _color, byte _shift, Color _woodColor, byte _woodshift, Image _field, Image _baseField, Color _water)
+        public FireSimulation(Color _color, byte _shift, Color _woodColor, byte _woodshift, Image _field, Image _baseField, Color _water, string _name="nameless")
         {
             
             color = _color;
@@ -34,6 +34,7 @@ namespace SandySharp
             passiveFire = new Color(color.R, (byte)(color.G + shift*0.9f), color.B, color.A);
             rand = new Random();
             water = _water;
+            name = _name;
         }
 
         public override void start()

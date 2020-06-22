@@ -16,6 +16,7 @@ namespace SandySharp
         private Panel BrushesPanel;
         private Panel LayerPanel;
         private Panel performancePanel;
+        private Panel objectsControlPanel;
         private TextBox frameDelay;
         private Font font;
         //слои 
@@ -31,8 +32,7 @@ namespace SandySharp
 
         public void start()
         {
-            Image white = new Image(5, 5, Color.White);
-            Texture whiteTexture = new Texture(white);
+
             
             if(gui!=null) gui.RemoveAllWidgets();
             gui = new Gui(SceneManager.instance().window);
@@ -74,6 +74,7 @@ namespace SandySharp
                 positionOffset += 10; 
                 RadioButton colorBrush_Btn = new RadioButton(colorKey); //создаем кнопку с именем
                 colorBrush_Btn.Renderer.TextColor = Color.White;
+                colorBrush_Btn.Renderer.TextColorHover= Color.Blue;
                 colorBrush_Btn.PositionLayout = new Layout2d("0%", positionOffset + "%"); //производим смещение
                 colorBrush_Btn.Toggled += (e, a) => { if (colorBrush_Btn.Checked) BrushManager.instance().changeCurrentColor(colorKey); };  //привязываем к кнопке метод изменяющий текущий цвет у менеджера кистей
                 brushes.Add(colorBrush_Btn); //добавляем кнопку на панель
@@ -120,7 +121,48 @@ namespace SandySharp
             frameDelay.Renderer.TextColor = Color.White;
             performancePanel.Add(frameDelay);
             MainPanel.Add(performancePanel);
+
+
+            //Контроль симуляций (включение/выключение)
             
+            objectsControlPanel = new Panel();
+            GameObject[] Scene_objects = SceneManager.instance().GetGameObjects();
+            positionOffset = 0;
+            foreach (var obj in Scene_objects)
+            {
+                CheckBox gameObjectSwitcher = new CheckBox();
+                gameObjectSwitcher.Checked = true;
+                gameObjectSwitcher.Text = obj.name;
+                gameObjectSwitcher.Toggled += (e, a) => { obj.toggleActive(); };
+                gameObjectSwitcher.PositionLayout = new Layout2d("0%", positionOffset + "%");
+                gameObjectSwitcher.Renderer.TextColor = Color.White;
+                gameObjectSwitcher.Renderer.TextColorHover = Color.Green;
+                gameObjectSwitcher.Renderer.Font = font;
+                positionOffset += 13;
+                objectsControlPanel.Add(gameObjectSwitcher);
+            }
+
+
+
+            objectsControlPanel.Renderer.BackgroundColor = Color.Black;
+            objectsControlPanel.Renderer.BorderColor = Color.White;
+            objectsControlPanel.Renderer.Borders = new Outline(0, 5, 0, 5);
+            objectsControlPanel.PositionLayout = new Layout2d("0%", "60%");
+            objectsControlPanel.SizeLayout = new Layout2d("100%", "30%");
+            
+            MainPanel.Add(objectsControlPanel);
+
+            //кнопки смены сцены
+            Button sceneNext = new Button("next>");
+            sceneNext.Clicked += (e, r) => { SceneManager.instance().switchScene(1); };
+            sceneNext.PositionLayout = new Layout2d("50%", "90%");
+            MainPanel.Add(sceneNext);
+
+            Button scenePrev = new Button("<prev");
+            scenePrev.Clicked += (e, r) => { SceneManager.instance().switchScene(-1); };
+            scenePrev.PositionLayout = new Layout2d("0%", "90%");
+            MainPanel.Add(scenePrev);
+
         }
 
 

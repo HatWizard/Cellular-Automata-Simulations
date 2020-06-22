@@ -14,7 +14,7 @@ namespace SandySharp
 
         Color[] alphaGradient;
         Color temp;
-        public FlameSimulation(Color _color, Color _triggerColor ,Image _baseField,  Image _field)
+        public FlameSimulation(Color _color, Color _triggerColor ,Image _baseField,  Image _field, string _name = "nameless")
         {
             color = _color;
             baseField = _baseField;
@@ -27,6 +27,7 @@ namespace SandySharp
                 alphaGradient[i].A =(byte)(i*15);
                 Console.WriteLine(alphaGradient[i].A);
             }
+            name = _name;
 
         }
 

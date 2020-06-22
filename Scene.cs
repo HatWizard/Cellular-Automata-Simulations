@@ -6,7 +6,7 @@ namespace SandySharp
 {
     class Scene
     {
-        List<GameObject> gameObjects;
+        public List<GameObject> gameObjects;
         List<Layer> graphicLayers;
         RenderWindow window;
         
@@ -60,5 +60,18 @@ namespace SandySharp
         {
             return graphicLayers.ToArray();
         }
+
+
+        public GameObject Get_Gameobject_WithName(string _name)
+        {
+            foreach (var obj in gameObjects)
+            {
+                if (obj.name == _name) return obj;
+            }
+            return null;
+        }
+
+
+
     }
 }

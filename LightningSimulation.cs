@@ -19,14 +19,14 @@ namespace SandySharp
 
         //test
         
-        public LightningSimulation(Color _color, Color _fireColor ,Image _field, Image _baseField)
+        public LightningSimulation(Color _color, Color _fireColor ,Image _field, Image _baseField, string _name = "nameless")
         {
             field = _field;
             baseField = _baseField;
             color = _color;
             fireColor = _fireColor;
             rand = new Random();
-            
+            name = _name;
         }
         public override void start()
         {

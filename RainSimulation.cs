@@ -15,7 +15,7 @@ namespace SandySharp
         float rainChance;
         int maxRainRoll;
         int maxLightningRoll;
-        public RainSimulation(Color _waterColor, Color _lightningColor, Image _field, Image _lightningField, float _lightningChance=0.1f, float _rainChance=0.08f)
+        public RainSimulation(Color _waterColor, Color _lightningColor, Image _field, Image _lightningField, float _lightningChance=0.1f, float _rainChance=0.08f, string _name="nameless")
         {
             waterColor = _waterColor;
             lightningColor = _lightningColor;
@@ -26,7 +26,8 @@ namespace SandySharp
             rand = new Random();
 
             maxRainRoll = (int)(100 / rainChance);
-            maxLightningRoll= (int)(100 / lightningChance); 
+            maxLightningRoll= (int)(100 / lightningChance);
+            name = _name;
         }
 
         public override void start()

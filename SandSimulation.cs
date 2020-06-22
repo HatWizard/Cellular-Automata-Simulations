@@ -11,10 +11,11 @@ namespace SandySharp
 
         Color sand;
         Color temp;
-        public SandSimulation(Color _sand_color, Image _field)
+        public SandSimulation(Color _sand_color, Image _field, string _name="nameless")
         {
             sand = _sand_color;
             field = _field;
+            name = _name;
         }
 
         public override void start()

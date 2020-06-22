@@ -12,13 +12,13 @@ namespace SandySharp
         Color liquid;
         bool DirectionSwap = false;
         Func<uint, bool> CycleDir;
-        public LiquidSimulation(Color liquid_color, Image _field)
+        public LiquidSimulation(Color liquid_color, Image _field, string _name = "nameless")
         {
 
             liquid = liquid_color;
             field = _field;
             rand = new Random();
-
+            name = _name;
         }
         public override void start()
         {
