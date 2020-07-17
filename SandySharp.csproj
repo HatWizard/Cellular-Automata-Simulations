@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BrushManager.cs" />
+    <Compile Include="SceneCreator.cs" />
     <Compile Include="Counter.cs" />
     <Compile Include="FireSimulation.cs" />
     <Compile Include="FlameSimulation.cs" />

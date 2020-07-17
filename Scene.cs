@@ -9,11 +9,12 @@ namespace SandySharp
         public List<GameObject> gameObjects;
         List<Layer> graphicLayers;
         RenderWindow window;
-        
+        public Dictionary<string, Color> colors { get;}
         public Scene(RenderWindow _window)
         {
             gameObjects = new List<GameObject>();
             graphicLayers = new List<Layer>();
+            colors = new Dictionary<string, Color>();
             window = _window;
         }
         public void AddLayer(Layer layer)//добавление нового слоя
@@ -26,6 +27,12 @@ namespace SandySharp
         public void AddObject(GameObject gameObject) 
         {
             gameObjects.Add(gameObject);
+        }
+
+
+        public void AddColor(string key, Color color)
+        {
+            colors.Add(key, color);
         }
 
         public void initialisation()
@@ -71,7 +78,7 @@ namespace SandySharp
             return null;
         }
 
-
+        
 
     }
 }

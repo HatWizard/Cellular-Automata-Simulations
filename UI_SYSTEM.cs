@@ -153,15 +153,15 @@ namespace SandySharp
             MainPanel.Add(objectsControlPanel);
 
             //кнопки смены сцены
-            Button sceneNext = new Button("next>");
-            sceneNext.Clicked += (e, r) => { SceneManager.instance().switchScene(1); };
-            sceneNext.PositionLayout = new Layout2d("50%", "90%");
-            MainPanel.Add(sceneNext);
+            //Button sceneNext = new Button("next>");
+            //sceneNext.Clicked += (e, r) => { SceneManager.instance().switchScene(1); };
+            //sceneNext.PositionLayout = new Layout2d("50%", "90%");
+            //MainPanel.Add(sceneNext);
 
-            Button scenePrev = new Button("<prev");
-            scenePrev.Clicked += (e, r) => { SceneManager.instance().switchScene(-1); };
-            scenePrev.PositionLayout = new Layout2d("0%", "90%");
-            MainPanel.Add(scenePrev);
+            //Button scenePrev = new Button("<prev");
+            //scenePrev.Clicked += (e, r) => { SceneManager.instance().switchScene(-1); };
+            //scenePrev.PositionLayout = new Layout2d("0%", "90%");
+            //MainPanel.Add(scenePrev);
 
         }
 

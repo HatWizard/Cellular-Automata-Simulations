@@ -25,11 +25,11 @@ namespace SandySharp
 
         public override void update()
         {
-
+           
             for (uint i = field.Size.X - 2; i > 1; i--)
                 for (uint j = field.Size.Y - 2; j > 1; j--)
                 {
-                    
+                        //Console.WriteLine(field.GetPixel(i, j));
                         if (field.GetPixel(i, j) == sand)
                         {
                              

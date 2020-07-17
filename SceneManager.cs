@@ -261,6 +261,25 @@ namespace SandySharp
         }
 
 
+        public void loadScene(Scene scene)
+        {
+            scene.initialisation();
+            SceneManager.instance().setCurrentScene(scene);
+            TimeManager.instance().start();
+            ViewSystem.instance().start(scene.getLayers()[0].getSpriteToDraw());
+
+
+            BrushManager.instance().start(scene.getLayers()[0].picture.image);
+
+            foreach(var key in scene.colors.Keys)
+            {
+                BrushManager.instance().AddColor(scene.colors[key], key);
+            }
+          
+            UI_SYSTEM.instance().start();
+        }
+
+
     }
 
 

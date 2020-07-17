@@ -36,7 +36,11 @@ namespace SandySharp
             window.SetFramerateLimit(60);
 
             SceneManager.instance().start(window);
-            SceneManager.instance().loadScene1();
+            SceneCreator.instance().start(window);
+            //////////SCENE CREATION//////////////
+
+            //.instance().loadScene1();
+            SceneManager.instance().loadScene(SceneCreator.instance().createScene());
 
             Stopwatch stopwatch = new Stopwatch();
             //////////////////////////////////////

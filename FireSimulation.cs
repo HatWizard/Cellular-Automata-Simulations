@@ -23,15 +23,15 @@ namespace SandySharp
         bool fireable = true;
         public FireSimulation(Color _color, byte _shift, Color _woodColor, byte _woodshift, Image _field, Image _baseField, Color _water, string _name="nameless")
         {
-            
-            color = _color;
+
+            activeFire = _color;
             shift = _shift;
             woodColor = _woodColor;
             woodshift = _woodshift;
             field = _field;
             baseField = _baseField;
-            activeFire = new Color(color.R, (byte)(color.G + shift), color.B, color.A);
-            passiveFire = new Color(color.R, (byte)(color.G + shift*0.9f), color.B, color.A);
+            color = new Color(_color.R, (byte)(_color.G - shift), _color.B, _color.A);
+            passiveFire = new Color(_color.R, (byte)(_color.G - shift*0.5f), _color.B, _color.A);
             rand = new Random();
             water = _water;
             name = _name;
@@ -69,7 +69,7 @@ namespace SandySharp
                                 {
                                    
                                     fireable = false;
-                                    if (rand.Next() % 50 == 1)
+                                    if (rand.Next()%50 == 1)
                                     {
                                         field.SetPixel((uint)pix.X, (uint)pix.Y, activeFire);
                                         baseField.SetPixel((uint)pix.X, (uint)pix.Y, Color.Transparent);
@@ -93,6 +93,7 @@ namespace SandySharp
                             if (rand.Next() % 30==1)
                             {
                                 field.SetPixel(i, j, color);
+
                             }
                         }
 
