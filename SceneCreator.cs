@@ -33,6 +33,11 @@ namespace SandySharp
 
         Panel currentToolPanel;
 
+        ListBox AddedSimsList;
+        int colorNameIterator=0;
+
+        Label originLabel;
+
         static SceneCreator Instance;
         #region Singleton
         public static SceneCreator instance()
@@ -90,16 +95,26 @@ namespace SandySharp
 
             Panel AddedSimuationsPanel = new Panel(simulationsPanel);
             AddedSimuationsPanel.PositionLayout = new Layout2d("73%", "5%");
-
-
+            
+            //origin widgets
             originPanel.Renderer.BackgroundColor = Color.Black;
             originPanel.Renderer.BorderColor = Color.White;
             originPanel.PositionLayout = new Layout2d("30.5%", "5%");
             originPanel.SizeLayout = new Layout2d("40%", "80%");
             originPanel.Renderer.Borders = new Outline(2, 2, 2, 2);
 
+            originLabel = new Label();
+            originLabel.Renderer.TextColor = Color.White;
 
+            Label SimulationsNote = new Label("Simulations: ");
+            SimulationsNote.Renderer = originLabel.Renderer;
+            SimulationsNote.PositionLayout = new Layout2d("3%", "1%");
+            Label AddedSimulationsNote = new Label("Added: ");
+            AddedSimulationsNote.Renderer = originLabel.Renderer;
+            AddedSimulationsNote.PositionLayout = new Layout2d("73%", "1%");
 
+            mainPanel.Add(SimulationsNote);
+            mainPanel.Add(AddedSimulationsNote);
             mainPanel.Add(simulationsPanel);
             mainPanel.Add(AddedSimuationsPanel);
 
@@ -135,6 +150,9 @@ namespace SandySharp
             lightningSimulationPanelInit();
             rainSimulationPanelInit();
 
+            AddedSimsList = new ListBox();
+            AddedSimsList.SizeLayout = new Layout2d("100%", "100%");
+            AddedSimuationsPanel.Add(AddedSimsList);
             ListBox SimulationsList = new ListBox();
             SimulationsList.AddItem("Sand Simulation", "Sand Simulation");
             SimulationsList.AddItem("Liquid Simulation", "Liquid Simulation");
@@ -269,12 +287,28 @@ namespace SandySharp
 
             Button AddSandSim = new Button("Add");
             AddSandSim.PositionLayout = new Layout2d("70%", "90%");
-            AddSandSim.Clicked += (e, a) => { Color sandColor = new Color((byte)r, (byte)g, (byte)b); Console.WriteLine(sandColor); simulations.Add(new SandSimulation(sandColor, image, Name.Text)); scene.AddColor(Name.Text, sandColor); };
+            AddSandSim.Clicked += (e, a) => {
+                Color sandColor = new Color((byte)r, (byte)g, (byte)b);
+                Console.WriteLine(sandColor); 
+                simulations.Add(new SandSimulation(sandColor, image, Name.Text)); 
+                scene.AddColor(Name.Text+(colorNameIterator++), sandColor);
+                updateSimsList();
+            };
             sandSimulationPanel.Add(AddSandSim);
 
             mainPanel.Add(sandSimulationPanel);
             sandSimulationPanel.Visible = false;
             currentToolPanel = sandSimulationPanel;
+
+            //notes
+            Label colorMainNote = new Label("Main color");
+            colorMainNote.Renderer = originLabel.Renderer;
+            colorMainNote.PositionLayout = new Layout2d("5%", "0%");
+            Label nameNote = new Label("Name");
+            nameNote.Renderer = originLabel.Renderer;
+            nameNote.PositionLayout = new Layout2d("5%", "13%");
+            sandSimulationPanel.Add(nameNote);
+            sandSimulationPanel.Add(colorMainNote);
         }
 
         private void LiquidSimulationPanelInit()
@@ -335,11 +369,28 @@ namespace SandySharp
 
             Button AddliquidSim = new Button("Add");
             AddliquidSim.PositionLayout = new Layout2d("70%", "90%");
-            AddliquidSim.Clicked += (e, a) => { Color liquidColor = new Color((byte)r, (byte)g, (byte)b); Console.WriteLine("Simulation added with color: "+liquidColor); simulations.Add(new LiquidSimulation(liquidColor, image, Name.Text)); scene.AddColor(Name.Text, liquidColor); };
+            AddliquidSim.Clicked += (e, a) => { 
+                Color liquidColor = new Color((byte)r, (byte)g, (byte)b); 
+                Console.WriteLine("Simulation added with color: "+liquidColor); 
+                simulations.Add(new LiquidSimulation(liquidColor, image, Name.Text)); 
+                scene.AddColor(Name.Text+(colorNameIterator++), liquidColor);
+                updateSimsList();
+                };
             liquidSimulationPanel.Add(AddliquidSim);
 
             mainPanel.Add(liquidSimulationPanel);
             liquidSimulationPanel.Visible = false;
+
+
+            //notes
+            Label colorMainNote = new Label("Main color");
+            colorMainNote.Renderer = originLabel.Renderer;
+            colorMainNote.PositionLayout = new Layout2d("5%", "0%");
+            Label nameNote = new Label("Name");
+            nameNote.Renderer = originLabel.Renderer;
+            nameNote.PositionLayout = new Layout2d("5%", "13%");
+            liquidSimulationPanel.Add(nameNote);
+            liquidSimulationPanel.Add(colorMainNote);
         }
 
 
@@ -391,19 +442,19 @@ namespace SandySharp
             int r1 = 92, g1 = 35, b1 = 7;
             Panel colorPick1 = new Panel();
             colorPick1.SizeLayout = new Layout2d("10%", "7%");
-            colorPick1.PositionLayout = new Layout2d("80%", "15%");
+            colorPick1.PositionLayout = new Layout2d("80%", "18%");
 
             EditBox red1 = new EditBox();
-            red1.PositionLayout = new Layout2d("5%", "15%");
+            red1.PositionLayout = new Layout2d("5%", "18%");
             red1.MaximumCharacters = 3;
 
             red1.SizeLayout = new Layout2d("20%", "7%");
             red1.DefaultText = "255";
 
             EditBox green1 = new EditBox(red1);
-            green1.PositionLayout = new Layout2d("30%", "15%");
+            green1.PositionLayout = new Layout2d("30%", "18%");
             EditBox blue1 = new EditBox(red1);
-            blue1.PositionLayout = new Layout2d("55%", "15%");
+            blue1.PositionLayout = new Layout2d("55%", "18%");
             ///////////////////
 
             red1.TextChanged += (e, a) => {
@@ -428,22 +479,22 @@ namespace SandySharp
             };
 
             ////WATER COLOR////
-            int r2 = 50, g2 = 50, b2 = 255;
+            int r2 = 48, g2 = 158, b2 = 252;
             Panel colorPick2 = new Panel();
             colorPick2.SizeLayout = new Layout2d("10%", "7%");
-            colorPick2.PositionLayout = new Layout2d("80%", "30%");
+            colorPick2.PositionLayout = new Layout2d("80%", "31%");
 
             EditBox red2 = new EditBox();
-            red2.PositionLayout = new Layout2d("5%", "30%");
+            red2.PositionLayout = new Layout2d("5%", "31%");
             red2.MaximumCharacters = 3;
 
             red2.SizeLayout = new Layout2d("20%", "7%");
             red2.DefaultText = "255";
 
             EditBox green2 = new EditBox(red2);
-            green2.PositionLayout = new Layout2d("30%", "30%");
+            green2.PositionLayout = new Layout2d("30%", "31%");
             EditBox blue2 = new EditBox(red2);
-            blue2.PositionLayout = new Layout2d("55%", "30%");
+            blue2.PositionLayout = new Layout2d("55%", "31%");
             ///////////////////
             
             red2.TextChanged += (e, a) => {
@@ -503,15 +554,33 @@ namespace SandySharp
                 Color waterColor = new Color((byte)r2, (byte)g2, (byte)b2);
                 Console.WriteLine("Simulation added with color: " + fireColor);
                 simulations.Add(new FireSimulation(fireColor,40, woodColor,40, fire_field, image, waterColor,Name.Text));
-                scene.AddColor(Name.Text, fireColor);
-                scene.AddColor("Wood", woodColor);
+                scene.AddColor(Name.Text + (colorNameIterator++), fireColor);
+                scene.AddColor("Wood" + (colorNameIterator++), woodColor);
+                updateSimsList();
             };
             fireSimulationPanel.Add(AddfireSim);
 
             mainPanel.Add(fireSimulationPanel);
             fireSimulationPanel.Visible = false;
 
-
+            //notes
+            Label colorMainNote = new Label("Main color");
+            colorMainNote.Renderer = originLabel.Renderer;
+            colorMainNote.PositionLayout = new Layout2d("5%", "0%");
+            Label colorWoodNote = new Label("Wood color");
+            colorWoodNote.Renderer = originLabel.Renderer;
+            colorWoodNote.PositionLayout = new Layout2d("5%", "13%");
+            Label colorWaterNote = new Label("Water color");
+            colorWaterNote.Renderer = originLabel.Renderer;
+            colorWaterNote.PositionLayout = new Layout2d("5%", "26%");
+            Label nameNote = new Label("Name");
+            nameNote.Renderer = originLabel.Renderer;
+            nameNote.PositionLayout = new Layout2d("5%", "45%");
+            fireSimulationPanel.Add(nameNote);
+            fireSimulationPanel.Add(colorMainNote);
+            fireSimulationPanel.Add(colorWaterNote);
+            fireSimulationPanel.Add(colorWoodNote);
+            
         }
 
 
@@ -563,19 +632,19 @@ namespace SandySharp
             int r1 = 255, g1 = 123, b1 = 15;
             Panel colorPick1 = new Panel();
             colorPick1.SizeLayout = new Layout2d("10%", "7%");
-            colorPick1.PositionLayout = new Layout2d("80%", "15%");
+            colorPick1.PositionLayout = new Layout2d("80%", "18%");
 
             EditBox red1 = new EditBox();
-            red1.PositionLayout = new Layout2d("5%", "15%");
+            red1.PositionLayout = new Layout2d("5%", "18%");
             red1.MaximumCharacters = 3;
 
             red1.SizeLayout = new Layout2d("20%", "7%");
             red1.DefaultText = "255";
 
             EditBox green1 = new EditBox(red1);
-            green1.PositionLayout = new Layout2d("30%", "15%");
+            green1.PositionLayout = new Layout2d("30%", "18%");
             EditBox blue1 = new EditBox(red1);
-            blue1.PositionLayout = new Layout2d("55%", "15%");
+            blue1.PositionLayout = new Layout2d("55%", "18%");
             ///////////////////
 
             red1.TextChanged += (e, a) => {
@@ -629,12 +698,26 @@ namespace SandySharp
                 Color triggerColor = new Color((byte)r1, (byte)g1, (byte)b1);
                 Console.WriteLine("Simulation added with color: " + flameColor);
                 simulations.Add(new FlameSimulation(flameColor, triggerColor, fire_field, flame_field, Name.Text));
+                updateSimsList();
             };
             flameSimulationPanel.Add(AddflameSim);
 
             mainPanel.Add(flameSimulationPanel);
             flameSimulationPanel.Visible = false;
 
+            //notes
+            Label colorMainNote = new Label("Main color");
+            colorMainNote.Renderer = originLabel.Renderer;
+            colorMainNote.PositionLayout = new Layout2d("5%", "0%");
+            Label colorTriggerNote = new Label("Trigger color");
+            colorTriggerNote.Renderer = originLabel.Renderer;
+            colorTriggerNote.PositionLayout = new Layout2d("5%", "13%");
+            Label nameNote = new Label("Name");
+            nameNote.Renderer = originLabel.Renderer;
+            nameNote.PositionLayout = new Layout2d("5%", "45%");
+            flameSimulationPanel.Add(nameNote);
+            flameSimulationPanel.Add(colorMainNote);
+            flameSimulationPanel.Add(colorTriggerNote);
         }
 
 
@@ -686,19 +769,19 @@ namespace SandySharp
             int r1 = 255, g1 = 123, b1 = 15;
             Panel colorPick1 = new Panel();
             colorPick1.SizeLayout = new Layout2d("10%", "7%");
-            colorPick1.PositionLayout = new Layout2d("80%", "15%");
+            colorPick1.PositionLayout = new Layout2d("80%", "18%");
 
             EditBox red1 = new EditBox();
-            red1.PositionLayout = new Layout2d("5%", "15%");
+            red1.PositionLayout = new Layout2d("5%", "18%");
             red1.MaximumCharacters = 3;
 
             red1.SizeLayout = new Layout2d("20%", "7%");
             red1.DefaultText = "255";
 
             EditBox green1 = new EditBox(red1);
-            green1.PositionLayout = new Layout2d("30%", "15%");
+            green1.PositionLayout = new Layout2d("30%", "18%");
             EditBox blue1 = new EditBox(red1);
-            blue1.PositionLayout = new Layout2d("55%", "15%");
+            blue1.PositionLayout = new Layout2d("55%", "18%");
             ///////////////////
 
             red1.TextChanged += (e, a) => {
@@ -752,13 +835,27 @@ namespace SandySharp
                 Color triggerColor = new Color((byte)r1, (byte)g1, (byte)b1);
                 Console.WriteLine("Simulation added with color: " + triggerColor);
                 simulations.Add(new LightningSimulation(lightningColor, triggerColor, fire_field, image, Name.Text));
-                scene.AddColor(Name.Text, lightningColor);
+                scene.AddColor(Name.Text + (colorNameIterator++), lightningColor);
+                updateSimsList();
             };
             lightningSimulationPanel.Add(AddlightningSim);
 
             mainPanel.Add(lightningSimulationPanel);
             lightningSimulationPanel.Visible = false;
 
+            //notes
+            Label colorMainNote = new Label("Main color");
+            colorMainNote.Renderer = originLabel.Renderer;
+            colorMainNote.PositionLayout = new Layout2d("5%", "0%");
+            Label colorTriggerNote = new Label("Trigger color");
+            colorTriggerNote.Renderer = originLabel.Renderer;
+            colorTriggerNote.PositionLayout = new Layout2d("5%", "13%");
+            Label nameNote = new Label("Name");
+            nameNote.Renderer = originLabel.Renderer;
+            nameNote.PositionLayout = new Layout2d("5%", "45%");
+            lightningSimulationPanel.Add(nameNote);
+            lightningSimulationPanel.Add(colorMainNote);
+            lightningSimulationPanel.Add(colorTriggerNote);
         }
 
         void rainSimulationPanelInit()
@@ -806,22 +903,22 @@ namespace SandySharp
             };
 
             ////TRIGGER COLOR/////
-            int r1 = 255, g1 = 123, b1 = 15;
+            int r1 = 15, g1 = 247, b1 = 255;
             Panel colorPick1 = new Panel();
             colorPick1.SizeLayout = new Layout2d("10%", "7%");
-            colorPick1.PositionLayout = new Layout2d("80%", "15%");
+            colorPick1.PositionLayout = new Layout2d("80%", "18%");
 
             EditBox red1 = new EditBox();
-            red1.PositionLayout = new Layout2d("5%", "15%");
+            red1.PositionLayout = new Layout2d("5%", "18%");
             red1.MaximumCharacters = 3;
 
             red1.SizeLayout = new Layout2d("20%", "7%");
             red1.DefaultText = "255";
 
             EditBox green1 = new EditBox(red1);
-            green1.PositionLayout = new Layout2d("30%", "15%");
+            green1.PositionLayout = new Layout2d("30%", "18%");
             EditBox blue1 = new EditBox(red1);
-            blue1.PositionLayout = new Layout2d("55%", "15%");
+            blue1.PositionLayout = new Layout2d("55%", "18%");
             ///////////////////
 
             red1.TextChanged += (e, a) => {
@@ -848,7 +945,7 @@ namespace SandySharp
             EditBox Name = new EditBox();
             Name.PositionLayout = new Layout2d("5%%", "50%");
             Name.SizeLayout = new Layout2d("60%", "7%");
-            Name.Text = "FlameSim";
+            Name.Text = "RainSim";
             Name.SetSelectedText(0, 0);
             Name.MaximumCharacters = 10;
             rainSimulationPanel.Add(Name);
@@ -867,18 +964,19 @@ namespace SandySharp
 
             double watChan=0.1f, lightChance=0.08f;
             EditBox waterChance = new EditBox(red);
-            waterChance.PositionLayout = new Layout2d("5%", "40%");
+            waterChance.PositionLayout = new Layout2d("5%", "34%");
             waterChance.Text = "0.1";
             waterChance.SetSelectedText(0, 0);
             waterChance.MaximumCharacters = 6;
             EditBox lightningChance = new EditBox(waterChance);
-            lightningChance.PositionLayout = new Layout2d("35%", "40%");
+            lightningChance.PositionLayout = new Layout2d("35%", "34%");
             lightningChance.Text = "0.08";
             lightningChance.SetSelectedText(0, 0);
             rainSimulationPanel.Add(waterChance);
             rainSimulationPanel.Add(lightningChance);
 
-
+            EditBox test = new EditBox();
+                
 
             Button AddrainSim = new Button("Add");
             AddrainSim.PositionLayout = new Layout2d("70%", "90%");
@@ -889,17 +987,46 @@ namespace SandySharp
                 Console.WriteLine("Simulation added with color: " + rainColor);
                 double.TryParse(waterChance.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out watChan);
                 double.TryParse(lightningChance.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out lightChance);
-                simulations.Add(new RainSimulation(rainColor, lightningColor, image, fire_field, (float)watChan, (float)lightChance, Name.Text));
+                simulations.Add(new RainSimulation(rainColor, lightningColor, image, fire_field, (float)lightChance ,(float)watChan, Name.Text));
                 Console.WriteLine(watChan);
                 Console.WriteLine(lightChance);
+                updateSimsList();
             };
             rainSimulationPanel.Add(AddrainSim);
 
             mainPanel.Add(rainSimulationPanel);
             rainSimulationPanel.Visible = false;
 
+
+            //notes
+            Label colorMainNote = new Label("Main color");
+            colorMainNote.Renderer = originLabel.Renderer;
+            colorMainNote.PositionLayout = new Layout2d("5%", "0%");
+            Label colorlightningNote = new Label("Trigger color");
+            colorlightningNote.Renderer = originLabel.Renderer;
+            colorlightningNote.PositionLayout = new Layout2d("5%", "13%");
+            Label nameNote = new Label("Name");
+            nameNote.Renderer = originLabel.Renderer;
+            nameNote.PositionLayout = new Layout2d("5%", "45%");
+            Label frequencyNote = new Label("Rain and lightning frequency");
+            frequencyNote.Renderer = originLabel.Renderer;
+            frequencyNote.PositionLayout = new Layout2d("5%", "29%");
+
+            rainSimulationPanel.Add(frequencyNote);
+            rainSimulationPanel.Add(nameNote);
+            rainSimulationPanel.Add(colorMainNote);
+            rainSimulationPanel.Add(colorlightningNote);
+
         }
 
+        void updateSimsList()
+        {
+            AddedSimsList.RemoveAllItems();
+            foreach(var obj in simulations)
+            {
+                AddedSimsList.AddItem(obj.name);
+            }
+        }
 
     }
 

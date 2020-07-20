@@ -13,10 +13,10 @@ namespace SandySharp
         private static UI_SYSTEM Instance;
         public Gui gui;
         private Panel MainPanel;
-        private Panel BrushesPanel;
+        private ScrollablePanel BrushesPanel;
         private Panel LayerPanel;
         private Panel performancePanel;
-        private Panel objectsControlPanel;
+        private ScrollablePanel objectsControlPanel;
         private TextBox frameDelay;
         private Font font;
         //слои 
@@ -53,10 +53,10 @@ namespace SandySharp
             
 
             font = new Font("EightBitDragon-anqx.ttf");
-            //string fontPath = System.IO.Directory.GetCurrentDirectory();
-            //Console.WriteLine(fontPath);
+
             //Создание панели с кистями.
-            BrushesPanel = new Panel();
+            BrushesPanel = new ScrollablePanel();
+            BrushesPanel.ScrollbarWidth = 8;
             BrushesPanel.Renderer.BackgroundColor = Color.Black;
             BrushesPanel.Renderer.BorderColor = Color.White;
             BrushesPanel.PositionLayout = new Layout2d("0%", "5%");
@@ -65,19 +65,18 @@ namespace SandySharp
 
             //Кисти.
             RadioButtonGroup brushes = new RadioButtonGroup();
-            
             Dictionary<string, Color> tempColors = BrushManager.instance().getColors();  //получаем список цветов от менеджера кистей
             int positionOffset = 0; //определяет смещение для кнопки
             
             foreach(var colorKey in tempColors.Keys)
             {
-                positionOffset += 10; 
+                positionOffset += 15; 
                 RadioButton colorBrush_Btn = new RadioButton(colorKey); //создаем кнопку с именем
                 colorBrush_Btn.Renderer.TextColor = Color.White;
                 colorBrush_Btn.Renderer.TextColorHover= Color.Blue;
                 colorBrush_Btn.PositionLayout = new Layout2d("0%", positionOffset + "%"); //производим смещение
                 colorBrush_Btn.Toggled += (e, a) => { if (colorBrush_Btn.Checked) BrushManager.instance().changeCurrentColor(colorKey); };  //привязываем к кнопке метод изменяющий текущий цвет у менеджера кистей
-                brushes.Add(colorBrush_Btn); //добавляем кнопку на панель
+                BrushesPanel.Add(colorBrush_Btn); //добавляем кнопку на панель
                 
             }
             
@@ -125,9 +124,11 @@ namespace SandySharp
 
             //Контроль симуляций (включение/выключение)
             
-            objectsControlPanel = new Panel();
+            objectsControlPanel = new ScrollablePanel();
+            objectsControlPanel.ScrollbarWidth = 8;
             GameObject[] Scene_objects = SceneManager.instance().GetGameObjects();
             positionOffset = 0;
+            
             foreach (var obj in Scene_objects)
             {
                 CheckBox gameObjectSwitcher = new CheckBox();
@@ -151,17 +152,6 @@ namespace SandySharp
             objectsControlPanel.SizeLayout = new Layout2d("100%", "30%");
             
             MainPanel.Add(objectsControlPanel);
-
-            //кнопки смены сцены
-            //Button sceneNext = new Button("next>");
-            //sceneNext.Clicked += (e, r) => { SceneManager.instance().switchScene(1); };
-            //sceneNext.PositionLayout = new Layout2d("50%", "90%");
-            //MainPanel.Add(sceneNext);
-
-            //Button scenePrev = new Button("<prev");
-            //scenePrev.Clicked += (e, r) => { SceneManager.instance().switchScene(-1); };
-            //scenePrev.PositionLayout = new Layout2d("0%", "90%");
-            //MainPanel.Add(scenePrev);
 
         }
 
